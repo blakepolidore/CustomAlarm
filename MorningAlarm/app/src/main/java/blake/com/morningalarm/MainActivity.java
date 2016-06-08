@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setViews() {
         timePicker = (TimePicker) findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true);
         toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
     }
 
@@ -55,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
                     calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
                     calendar.set(Calendar.MINUTE, timePicker.getMinute());
                     Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                    pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0);
+                    pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+//                    AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
+//                    alarmManager.setAlarmClock(info, pendingIntent);
                 }
                 else {
                     toggleButton.setTextOff("Alarm Off");

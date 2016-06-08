@@ -20,9 +20,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         Log.d("Receiver", "onReceive");
         //MainActivity inst = MainActivity.instance();
 
-        //this will sound the alarm tone
-        //this will sound the alarm once, if you wish to
-        //raise alarm in loop continuously then use MediaPlayer and setLooping(true)
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null) {
             alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -30,7 +27,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
         ringtone.play();
 
-        //this will send a notification message
         ComponentName comp = new ComponentName(context.getPackageName(),
                 MainActivity.class.getName());
         startWakefulService(context, (intent.setComponent(comp)));
