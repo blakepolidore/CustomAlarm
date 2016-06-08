@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
-import android.util.Log;
 
 /**
  * Created by Raiders on 6/8/16.
@@ -25,7 +24,6 @@ public class AlarmService extends IntentService {
     }
 
     private void sendNotification(String msg) {
-        Log.d("AlarmService", "Preparing to send notification...: " + msg);
         alarmNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -40,6 +38,5 @@ public class AlarmService extends IntentService {
 
         alamNotificationBuilder.setContentIntent(contentIntent);
         alarmNotificationManager.notify(1, alamNotificationBuilder.build());
-        Log.d("AlarmService", "Notification sent.");
     }
 }

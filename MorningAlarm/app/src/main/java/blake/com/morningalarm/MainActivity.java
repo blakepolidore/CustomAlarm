@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
         setViews();
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         onToggledClick();
     }
 
@@ -41,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setViews() {
         timePicker = (TimePicker) findViewById(R.id.timePicker);
-        timePicker.setIs24HourView(true);
         toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
     }
 
@@ -50,18 +51,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (toggleButton.isChecked()) {
-                    toggleButton.setTextOn("Alarm On");
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
                     calendar.set(Calendar.MINUTE, timePicker.getMinute());
-                    Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                    pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-//                    AlarmManager.AlarmClockInfo info = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), pendingIntent);
-//                    alarmManager.setAlarmClock(info, pendingIntent);
                 }
                 else {
-                    toggleButton.setTextOff("Alarm Off");
                     alarmManager.cancel(pendingIntent);
                 }
             }
