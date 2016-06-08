@@ -33,7 +33,7 @@ public class AlarmService extends IntentService {
                 new Intent(this, MainActivity.class), 0);
 
         android.support.v4.app.NotificationCompat.Builder alamNotificationBuilder = new NotificationCompat.Builder(
-                this).setContentTitle("Alarm").setSmallIcon(0)
+                this).setContentTitle("Alarm").setSmallIcon(R.mipmap.ic_launcher)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentText(msg);
 

@@ -28,7 +28,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         ringtone.play();
 
         ComponentName comp = new ComponentName(context.getPackageName(),
-                MainActivity.class.getName());
+                AlarmService.class.getName());
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
     }
