@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent pendingIntent;
     private QuotesInterface quotesInterface;
 
+    public static String quoteOfTheDay;
+    public static String authorQuoteOfTheDay;
+    public static String QUOTE_KEY = "quote key";
     public static MainActivity instance() {
         return activityInstance;
     }
@@ -89,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
-                Log.d("onResponse", response.body().getContents().getQuotes()[0].getQuote());
+                quoteOfTheDay = response.body().getContents().getQuotes()[0].getQuote();
+                authorQuoteOfTheDay = response.body().getContents().getQuotes()[0].getAuthor();
             }
 
             @Override

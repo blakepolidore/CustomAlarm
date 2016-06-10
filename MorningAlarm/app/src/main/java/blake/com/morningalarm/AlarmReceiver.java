@@ -27,6 +27,9 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
         ComponentName comp = new ComponentName(context.getPackageName(),
                 AlarmService.class.getName());
+        if (MainActivity.quoteOfTheDay != null) {
+            intent.putExtra(MainActivity.QUOTE_KEY, MainActivity.quoteOfTheDay + " (" + MainActivity.authorQuoteOfTheDay + ")");
+        }
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
     }

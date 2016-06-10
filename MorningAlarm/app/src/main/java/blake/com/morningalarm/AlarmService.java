@@ -20,7 +20,12 @@ public class AlarmService extends IntentService {
 
     @Override
     public void onHandleIntent(Intent intent) {
-        sendNotification("Wake Up! Wake Up!");
+        if (MainActivity.quoteOfTheDay != null) {
+            sendNotification(intent.getStringExtra(MainActivity.QUOTE_KEY));
+        }
+        else {
+            sendNotification("Rise and Shine! Its butt whooping time!");
+        }
     }
 
     private void sendNotification(String msg) {
