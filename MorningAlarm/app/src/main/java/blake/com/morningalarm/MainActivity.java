@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
 
 import java.util.Calendar;
 
+import blake.com.morningalarm.interfaces.PhotoInterface;
 import blake.com.morningalarm.interfaces.QuotesInterface;
-import blake.com.morningalarm.models.Root;
+import blake.com.morningalarm.models.pictures.PhotoRoot;
+import blake.com.morningalarm.models.quotes.Root;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,10 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     private TimePicker timePicker;
     private ToggleButton toggleButton;
+    private TextView textView;
     private static MainActivity activityInstance;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     private QuotesInterface quotesInterface;
+    private PhotoInterface photoInterface;
 
     public static String quoteOfTheDay;
     public static String authorQuoteOfTheDay;
@@ -46,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         onToggledClick();
-        setRetrofit();
+        setQuotesRetrofit();
+        setPicturesRetrofit();
     }
 
     @Override
@@ -58,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private void setViews() {
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
+        textView = (TextView) findViewById(R.id.textView);
     }
 
     public void onToggledClick() {
@@ -78,15 +85,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setRetrofit() {
+    private void setQuotesRetrofit() {
         Retrofit retrofitQuotes = new Retrofit.Builder()
                 .baseUrl("http://quotes.rest/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         quotesInterface = retrofitQuotes.create(QuotesInterface.class);
-
-        Log.d("setRetrofit", "in");
 
         Call<Root> call = quotesInterface.getQuotes();
         call.enqueue(new Callback<Root>() {
@@ -101,5 +106,31 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("onFailure", "fucked up");
             }
         });
+    }
+
+    private void setPicturesRetrofit() {
+        Retrofit retrofitQuotes = new Retrofit.Builder()
+                .baseUrl("https://pixabay.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        photoInterface = retrofitQuotes.create(PhotoInterface.class);
+
+        Call<PhotoRoot> call = photoInterface.getPicture("2730929-e3fc386f99be9f891fc81141d", "nature");
+        call.enqueue(new Callback<PhotoRoot>() {
+            @Override
+            public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
+                Log.d("onResponse Photos", response.body().getHits()[0].getPageURL());
+            }
+
+            @Override
+            public void onFailure(Call<PhotoRoot> call, Throwable t) {
+                Log.d("onFailure Photos", "failed");
+            }
+        });
+    }
+
+    public void setQuoteText(String quote) {
+        textView.setText(quote);
     }
 }

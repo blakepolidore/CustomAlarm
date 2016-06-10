@@ -1,4 +1,4 @@
-package blake.com.morningalarm.models;
+package blake.com.morningalarm.models.quotes;
 
 /**
  * Created by Raiders on 6/9/16.

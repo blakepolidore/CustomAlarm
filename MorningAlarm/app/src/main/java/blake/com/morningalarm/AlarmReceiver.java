@@ -16,7 +16,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        //MainActivity inst = MainActivity.instance();
+        MainActivity inst = MainActivity.instance();
 
         Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         if (alarmUri == null) {
@@ -29,6 +29,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
                 AlarmService.class.getName());
         if (MainActivity.quoteOfTheDay != null) {
             intent.putExtra(MainActivity.QUOTE_KEY, MainActivity.quoteOfTheDay + " (" + MainActivity.authorQuoteOfTheDay + ")");
+            inst.setQuoteText(MainActivity.quoteOfTheDay + " (" + MainActivity.authorQuoteOfTheDay + ")");
         }
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
