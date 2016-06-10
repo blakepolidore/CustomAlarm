@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         photoInterface = retrofitQuotes.create(PhotoInterface.class);
 
-        Call<PhotoRoot> call = photoInterface.getPicture("2730929-e3fc386f99be9f891fc81141d", "nature");
+        Call<PhotoRoot> call = photoInterface.getPicture(Keys.photoKey, "nature");
         call.enqueue(new Callback<PhotoRoot>() {
             @Override
             public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
