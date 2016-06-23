@@ -121,8 +121,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     isToggled = false;
-                    Log.d("Main", "toggle unchecked");
+                    Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(pendingIntent);
+                    pendingIntent.cancel();
                 }
             }
         });
@@ -180,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setImageView(String url) {
-        Picasso.with(getApplicationContext()).load(url).resize(900, 600).placeholder(R.mipmap.ic_launcher).into(imageView);
+        Picasso.with(getApplicationContext()).load(url).resize(900, 600).placeholder(R.drawable.ron).into(imageView);
     }
 
     private void setRonSwansonRetrofit() {

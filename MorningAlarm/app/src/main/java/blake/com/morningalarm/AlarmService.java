@@ -20,7 +20,7 @@ public class AlarmService extends IntentService {
 
     @Override
     public void onHandleIntent(Intent intent) {
-        if (MainActivity.quoteOfTheDay != null) {
+        if (MainActivity.ronQuote != null) {
             sendNotification(intent.getStringExtra(MainActivity.QUOTE_KEY));
         }
         else {
