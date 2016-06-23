@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import blake.com.morningalarm.interfaces.PhotoInterface;
 import blake.com.morningalarm.interfaces.QuotesInterface;
+import blake.com.morningalarm.interfaces.RonSwansonInterface;
 import blake.com.morningalarm.models.pictures.PhotoRoot;
 import blake.com.morningalarm.models.quotes.Root;
 import retrofit2.Call;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private PendingIntent pendingIntent;
     private QuotesInterface quotesInterface;
     private PhotoInterface photoInterface;
+    private RonSwansonInterface ronSwansonInterface;
 
     public static String quoteOfTheDay;
     public static String authorQuoteOfTheDay;
@@ -51,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         onToggledClick();
-        setQuotesRetrofit();
+        //setQuotesRetrofit();
         setPicturesRetrofit();
+        setRonSwansonRetrofit();
     }
 
     @Override
@@ -132,5 +135,27 @@ public class MainActivity extends AppCompatActivity {
 
     public void setQuoteText(String quote) {
         textView.setText(quote);
+    }
+
+    private void setRonSwansonRetrofit() {
+        Retrofit retrofitQuotes = new Retrofit.Builder()
+                .baseUrl("http://ron-swanson-quotes.herokuapp.com/v2/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ronSwansonInterface = retrofitQuotes.create(RonSwansonInterface.class);
+
+        Call<String[]> call = ronSwansonInterface.getRonQuote();
+        call.enqueue(new Callback<String[]>() {
+            @Override
+            public void onResponse(Call<String[]> call, Response<String[]> response) {
+                Log.d("Swanson", response.body()[0]);
+            }
+
+            @Override
+            public void onFailure(Call<String[]> call, Throwable t) {
+                Log.d("Swanson", "fail");
+            }
+        });
     }
 }
