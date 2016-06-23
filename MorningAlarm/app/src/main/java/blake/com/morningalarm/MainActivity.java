@@ -3,7 +3,9 @@ package blake.com.morningalarm;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,8 +38,13 @@ public class MainActivity extends AppCompatActivity {
     private PhotoInterface photoInterface;
     private RonSwansonInterface ronSwansonInterface;
 
+    private SharedPreferences sharedPreferences;
+    private int picCounter = 0;
+    private String COUNTER_KEY = "counter key";
+
     public static String quoteOfTheDay;
     public static String authorQuoteOfTheDay;
+    public static String ronQuote;
     public static String QUOTE_KEY = "quote key";
     public static MainActivity instance() {
         return activityInstance;
@@ -49,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setViews();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -62,6 +70,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         activityInstance = this;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(COUNTER_KEY, picCounter);
+        editor.apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        picCounter = sharedPreferences.getInt(COUNTER_KEY, 0);
     }
 
     private void setViews() {
@@ -106,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
-                Log.d("onFailure", "fucked up");
+                Log.d("onFailure", "failed");
             }
         });
     }
@@ -119,11 +141,12 @@ public class MainActivity extends AppCompatActivity {
 
         photoInterface = retrofitQuotes.create(PhotoInterface.class);
 
-        Call<PhotoRoot> call = photoInterface.getPicture(Keys.photoKey, "nature");
+        Call<PhotoRoot> call = photoInterface.getPicture(Keys.photoKey, "nature", 100);
         call.enqueue(new Callback<PhotoRoot>() {
             @Override
             public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
-                Log.d("onResponse Photos", response.body().getHits()[0].getPageURL());
+                Log.d("onResponse Photos", response.body().getHits()[picCounter].getPageURL());
+                picCounter++;
             }
 
             @Override
@@ -149,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<String[]>() {
             @Override
             public void onResponse(Call<String[]> call, Response<String[]> response) {
-                Log.d("Swanson", response.body()[0]);
+                ronQuote = response.body()[0];
             }
 
             @Override

@@ -11,5 +11,5 @@ import retrofit2.http.Query;
 public interface PhotoInterface {
 
     @GET("api/")
-    Call<PhotoRoot> getPicture(@Query("key") String key, @Query("category") String category);
+    Call<PhotoRoot> getPicture(@Query("key") String key, @Query("category") String category, @Query("per_page") int picAmount);
 }
