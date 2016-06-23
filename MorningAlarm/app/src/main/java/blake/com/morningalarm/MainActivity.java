@@ -23,6 +23,7 @@ import blake.com.morningalarm.interfaces.QuotesInterface;
 import blake.com.morningalarm.interfaces.RonSwansonInterface;
 import blake.com.morningalarm.models.pictures.PhotoRoot;
 import blake.com.morningalarm.models.quotes.Root;
+import blake.com.morningalarm.services.RingtoneService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -121,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     isToggled = false;
-                    Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(pendingIntent);
                     pendingIntent.cancel();
+                    Intent ringtoneIntent = new Intent(MainActivity.this, RingtoneService.class);
+                    stopService(ringtoneIntent);
                 }
             }
         });

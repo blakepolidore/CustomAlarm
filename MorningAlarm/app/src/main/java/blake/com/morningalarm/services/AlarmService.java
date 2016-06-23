@@ -1,4 +1,4 @@
-package blake.com.morningalarm;
+package blake.com.morningalarm.services;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.NotificationCompat;
+
+import blake.com.morningalarm.MainActivity;
+import blake.com.morningalarm.R;
 
 /**
  * Created by Raiders on 6/8/16.

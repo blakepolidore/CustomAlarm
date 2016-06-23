@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.support.v4.content.WakefulBroadcastReceiver;
+
+import blake.com.morningalarm.services.AlarmService;
+import blake.com.morningalarm.services.RingtoneService;
 
 /**
  * Created by Raiders on 6/8/16.
@@ -18,12 +18,14 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         MainActivity inst = MainActivity.instance();
 
-        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        if (alarmUri == null) {
-            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
-        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
-        ringtone.play();
+//        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+//        if (alarmUri == null) {
+//            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//        }
+//        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+//        ringtone.play();
+        Intent ringtoneService = new Intent(context, RingtoneService.class);
+        context.startService(ringtoneService);
 
         ComponentName comp = new ComponentName(context.getPackageName(),
                 AlarmService.class.getName());
