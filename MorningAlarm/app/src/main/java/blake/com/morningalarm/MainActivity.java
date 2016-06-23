@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private int picCounter = 0;
     private String COUNTER_KEY = "counter key";
+    private boolean isToggled = false;
+    private String TOGGLE_KEY = "toggle key";
 
     public static String quoteOfTheDay;
     public static String authorQuoteOfTheDay;
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(COUNTER_KEY, picCounter);
+        editor.putBoolean(TOGGLE_KEY, isToggled);
         editor.apply();
     }
 
@@ -84,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         picCounter = sharedPreferences.getInt(COUNTER_KEY, 0);
+        isToggled = sharedPreferences.getBoolean(TOGGLE_KEY, isToggled);
+        toggleButton.setChecked(isToggled);
     }
 
     private void setViews() {
@@ -97,12 +102,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (toggleButton.isChecked()) {
+                    isToggled = true;
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
                     calendar.set(Calendar.MINUTE, timePicker.getMinute());
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }
                 else {
+                    isToggled = false;
                     Log.d("Main", "toggle unchecked");
                     alarmManager.cancel(pendingIntent);
                 }
