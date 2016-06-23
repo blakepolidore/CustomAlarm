@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorPrimaryDark"
     tools:context="blake.com.morningalarm.MainActivity">
 
     <TimePicker
@@ -29,7 +30,8 @@
         android:layout_height="wrap_content"
         android:text=""
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/black"/>
 
     <ImageView
         android:src="@drawable/ron"
