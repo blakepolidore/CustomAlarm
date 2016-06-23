@@ -9,9 +9,12 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.ToggleButton;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TimePicker timePicker;
     private ToggleButton toggleButton;
     private TextView textView;
+    private ImageView imageView;
     private static MainActivity activityInstance;
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
@@ -38,15 +42,18 @@ public class MainActivity extends AppCompatActivity {
     private PhotoInterface photoInterface;
     private RonSwansonInterface ronSwansonInterface;
 
+    //region sharedpref
     private SharedPreferences sharedPreferences;
     private int picCounter = 0;
     private String COUNTER_KEY = "counter key";
     private boolean isToggled = false;
     private String TOGGLE_KEY = "toggle key";
+    //endregion sharedpref
 
     public static String quoteOfTheDay;
     public static String authorQuoteOfTheDay;
     public static String ronQuote;
+    public static String imageURL;
     public static String QUOTE_KEY = "quote key";
     public static MainActivity instance() {
         return activityInstance;
@@ -87,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         picCounter = sharedPreferences.getInt(COUNTER_KEY, 0);
+        if (picCounter >98) {
+            picCounter = 1;
+        }
         isToggled = sharedPreferences.getBoolean(TOGGLE_KEY, isToggled);
         toggleButton.setChecked(isToggled);
     }
@@ -95,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
         textView = (TextView) findViewById(R.id.textView);
+        imageView = (ImageView) findViewById(R.id.imageView);
     }
 
     public void onToggledClick() {
@@ -152,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<PhotoRoot>() {
             @Override
             public void onResponse(Call<PhotoRoot> call, Response<PhotoRoot> response) {
-                Log.d("onResponse Photos", response.body().getHits()[picCounter].getPageURL());
+                Log.d("pic onResponse", response.body().getHits()[picCounter].getWebformatURL());
+                imageURL = response.body().getHits()[picCounter].getWebformatURL();
                 picCounter++;
             }
 
@@ -165,6 +177,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void setQuoteText(String quote) {
         textView.setText(quote);
+    }
+
+    public void setImageView(String url) {
+        Picasso.with(getApplicationContext()).load(url).resize(900, 600).placeholder(R.mipmap.ic_launcher).into(imageView);
     }
 
     private void setRonSwansonRetrofit() {
@@ -188,4 +204,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

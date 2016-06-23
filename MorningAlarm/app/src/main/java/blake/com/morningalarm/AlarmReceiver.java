@@ -34,6 +34,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         if (MainActivity.ronQuote != null) {
             intent.putExtra(MainActivity.QUOTE_KEY, MainActivity.ronQuote);
             inst.setQuoteText(MainActivity.ronQuote);
+            inst.setImageView(MainActivity.imageURL);
         }
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
