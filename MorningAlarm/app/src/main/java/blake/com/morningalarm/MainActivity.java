@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private QuotesInterface quotesInterface;
     private PhotoInterface photoInterface;
     private RonSwansonInterface ronSwansonInterface;
+    private Calendar calendar;
 
     //region sharedpref
     private SharedPreferences sharedPreferences;
@@ -68,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
         setViews();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         onToggledClick();
         //setQuotesRetrofit();
         setPicturesRetrofit();
@@ -114,16 +113,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (toggleButton.isChecked()) {
+                    if (calendar != null) {
+                        calendar.clear();
+                    }
                     isToggled = true;
-                    Calendar calendar = Calendar.getInstance();
+                    Intent intent = new Intent(MainActivity.this, AlarmReceiver.class);
+                    pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    calendar = Calendar.getInstance();
                     calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
                     calendar.set(Calendar.MINUTE, timePicker.getMinute());
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 }
                 else {
+                    if (calendar != null) {
+                        calendar.clear();
+                    }
                     isToggled = false;
                     alarmManager.cancel(pendingIntent);
-                    pendingIntent.cancel();
+                    if (pendingIntent != null) {
+                        pendingIntent.cancel();
+                    }
                     Intent ringtoneIntent = new Intent(MainActivity.this, RingtoneService.class);
                     stopService(ringtoneIntent);
                 }
