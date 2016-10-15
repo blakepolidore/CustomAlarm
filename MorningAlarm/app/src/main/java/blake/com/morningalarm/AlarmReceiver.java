@@ -11,6 +11,8 @@ import blake.com.morningalarm.services.RingtoneService;
 
 /**
  * Created by Raiders on 6/8/16.
+ * Broadcast receiver when activated starts the ringtone service and the
+ * alarm service. It also sets the image and text views on the main activity
  */
 public class AlarmReceiver extends WakefulBroadcastReceiver {
 
@@ -18,12 +20,6 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         MainActivity inst = MainActivity.instance();
 
-//        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-//        if (alarmUri == null) {
-//            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-//        }
-//        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
-//        ringtone.play();
         Intent ringtoneService = new Intent(context, RingtoneService.class);
         context.startService(ringtoneService);
 

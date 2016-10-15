@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 
 /**
  * Created by Raiders on 6/23/16.
+ * Sets up the ringtone to be turned on at the designated time
+ * and to be turned off when the user clicks the off toggle.
  */
 public class RingtoneService extends Service {
 

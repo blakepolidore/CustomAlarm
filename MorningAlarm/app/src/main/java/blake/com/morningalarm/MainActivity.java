@@ -29,7 +29,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+/*
+Main activity. User can set a time for the alarm to go off.
+The activity is responsible for making the api calls and calling on
+the alarm receiver
+ */
 public class MainActivity extends AppCompatActivity {
 
     private TimePicker timePicker;
@@ -178,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("pic onResponse", response.body().getHits()[picCounter].getWebformatURL());
                 imageURL = response.body().getHits()[picCounter].getWebformatURL();
                 picCounter++;
+                Log.d("pic counter", picCounter + "");
             }
 
             @Override

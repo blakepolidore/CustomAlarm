@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">MorningAlarm</string>
+    <string name="app_name">Ron Swanson Alarm Clock</string>
+    <string name="default_alarm_notification">Rise and Shine! Its butt whooping time!</string>
+    <string name="alarm">Alarm</string>
 </resources>

@@ -12,6 +12,7 @@ import blake.com.morningalarm.R;
 
 /**
  * Created by Raiders on 6/8/16.
+ * Sends a notification to the phone at the designated time
  */
 public class AlarmService extends IntentService {
 
@@ -27,7 +28,7 @@ public class AlarmService extends IntentService {
             sendNotification(intent.getStringExtra(MainActivity.QUOTE_KEY));
         }
         else {
-            sendNotification("Rise and Shine! Its butt whooping time!");
+            sendNotification(getString(R.string.default_alarm_notification));
         }
     }
 
@@ -39,7 +40,7 @@ public class AlarmService extends IntentService {
                 new Intent(this, MainActivity.class), 0);
 
         android.support.v4.app.NotificationCompat.Builder alamNotificationBuilder = new NotificationCompat.Builder(
-                this).setContentTitle("Alarm").setSmallIcon(R.mipmap.ic_launcher)
+                this).setContentTitle(getString(R.string.alarm)).setSmallIcon(R.drawable.ron_icon)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                 .setContentText(msg);
 
